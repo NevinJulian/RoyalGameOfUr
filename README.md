@@ -9,4 +9,4 @@ Je nachdem wie viel Zeit bleibt werden wir die Möglichkeit hinzufügen, Online 
 
 # Technologie
 - Angular
-- .NET Backend
+- NodeJS
