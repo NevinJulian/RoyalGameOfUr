@@ -1,3 +1,16 @@
+# RoyalGameOfUr Wojtek 3522
+Royal Game of Ur
+
+In honor of Wojtek, a great inspiration.
+
+# Projektidee
+Wir erstellen das 4500 Jahre alte Spiel "Royal Game of Ur" in einer Webapplikation. Dazu machen einen simplen Bot, gegen den der Spieler antreten kann.
+Je nachdem wie viel Zeit bleibt werden wir die Möglichkeit hinzufügen, Online gegeneinander zu spielen.
+
+# Technologie
+- Angular
+- NodeJS
+
 # RoyalGameOfUr
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.0.
@@ -25,3 +38,4 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
