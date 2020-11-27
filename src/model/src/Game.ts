@@ -35,6 +35,7 @@ export function generateBoard(): Square[] {
 }
 
 export function nthSquare(board: Square[], squareType: SquareType, index: number): Square {
-    return board.filter(square => square.squareType == squareType || square.squareType == "neutral")[index];
+    
+    return board.filter(square => [squareType, "neutral", "finish"].includes(square.squareType))[index - 1];
 }
 

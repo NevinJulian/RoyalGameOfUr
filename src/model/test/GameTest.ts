@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { nthSquare, throwDice } from '../src/Game';
+import { throwDice } from '../src/Game';
 import { generateBoard as getStartBoard } from '../src/Game';
 
 describe('My game library', () => {
@@ -7,10 +7,6 @@ describe('My game library', () => {
     
     it('is able to roll four dice', () => {
         expect(throwDice().length).to.equal(4);
-    });
-
-    it('is able to get any field of a play color', () => {
-        expect(nthSquare(board, "black", 5)).is.deep.equal({stone: null, squareType: "neutral", special: false})
     });
 
 });
