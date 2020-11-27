@@ -33,6 +33,6 @@ export function throwDice(): boolean[] {
     }
 
     export function nthSquare(board: Square[], squareType: SquareType, index: number): Square {
-        return null;
+        return board.filter(square => square.squareType == squareType || square.squareType == "neutral")[index];
     }
 
