@@ -12,7 +12,6 @@ describe('My game state library', () => {
     it('board is generated correctly', () => {
         expect(board.length).is.equal(22);
         console.log(board);
-        expect(nth_square(board, "black", 3)).is.deep.equal({stone: null, squareType: "black", special: true});
         expect(board[7]).is.deep.equal({stone: null, squareType: "white", special: true});
         
 

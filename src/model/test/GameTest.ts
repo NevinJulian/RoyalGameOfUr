@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { nthSquare, throwDice } from '../src/Game';
 import { generateBoard as getStartBoard } from '../src/Game';
-import { Square } from '../src/GameState';
 
 describe('My game library', () => {
     const board = getStartBoard();
