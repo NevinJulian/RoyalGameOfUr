@@ -1,12 +1,12 @@
 import { expect } from 'chai';
-import { generateBoard, nthSquare } from '../src/Game';
+import {nthSquare, generateStartBoard } from '../src/Game';
 import { Square} from "../src/GameState";
 
 describe('My game state library', () => {
     let board: Square[];
 
     beforeEach(function() {
-        board = generateBoard();
+        board = generateStartBoard();
     });
 
     it('board is generated correctly', () => {
