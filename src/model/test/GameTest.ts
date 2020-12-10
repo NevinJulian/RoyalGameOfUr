@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { throwDice, generateStartingGameState, placeStoneOnBoard, moveStone, nthSquare, validMove } from '../src/Game';
+import { throwDice, generateStartingGameState, placeStoneOnBoard, moveStone, nthSquare, validMove, hasPlayerWon } from '../src/Game';
 import { Square, GameState } from '../src/GameState';
 
 describe('My game library', () => {
@@ -92,5 +92,11 @@ describe('My game library', () => {
 
         const gameStateAfter = moveStone(gameState, 13, gameState.player2, 2);
         expect(gameStateAfter).to.be.null;
+    });
+
+    it('does player win with 7 finished stones', () => {
+        gameState.player1.finishedStones = 7;
+
+        expect(hasPlayerWon(gameState.player1)).is.true;
     });
 });

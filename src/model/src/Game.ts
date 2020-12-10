@@ -105,9 +105,10 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
     if (endSquare.special) {
         return false;
     }
-
-
-
     return true;
+}
+
+export function hasPlayerWon(player: Player): boolean {
+    return player.finishedStones == 7;
 }
 
