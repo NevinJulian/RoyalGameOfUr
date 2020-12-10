@@ -48,14 +48,15 @@ export function nthSquare(board: Square[], color: Color, n: number): Square | nu
 }
 
 //remove player param and replace with gameState TODO
-export function placeStoneOnBoard(board: Square[], player: Player, diceRoll: number): boolean {
-    if (nthSquare(board, player.stoneColor, diceRoll).stone == null && player.notYetPlayedStones > 0) {
-        nthSquare(board, player.stoneColor, diceRoll).stone = player.stoneColor;
+export function placeStoneOnBoard(gameState: GameState, player: Player, diceRoll: number): GameState {
+    const gameStateAfter = cloneDeep(gameState);
+    if (nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone == null && player.notYetPlayedStones > 0) {
+        nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone = player.stoneColor;
         player.notYetPlayedStones--;
-        return true;
     } else {
-        return false;
+        return null;
     }
+    return gameStateAfter;
 }
 
 export function moveStone(gameStateBefore: GameState, squareNumber: number, player: Player, diceRoll: number): GameState | null {
@@ -107,6 +108,7 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
     }
     return true;
 }
+
 
 export function hasPlayerWon(player: Player): boolean {
     return player.finishedStones == 7;
