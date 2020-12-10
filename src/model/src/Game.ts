@@ -52,7 +52,11 @@ export function placeStoneOnBoard(gameState: GameState, player: Player, diceRoll
     const gameStateAfter = cloneDeep(gameState);
     if (nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone == null && player.notYetPlayedStones > 0) {
         nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone = player.stoneColor;
-        player.notYetPlayedStones--;
+        if (isEqual(gameStateAfter.player1, player)) {
+            gameStateAfter.player1.notYetPlayedStones--;
+        } else {
+            gameStateAfter.player2.notYetPlayedStones--;
+        }
     } else {
         return null;
     }
@@ -108,7 +112,6 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
     }
     return true;
 }
-
 
 export function hasPlayerWon(player: Player): boolean {
     return player.finishedStones == 7;
