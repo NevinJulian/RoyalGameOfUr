@@ -90,6 +90,9 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
     if (endSquare.stone == startSquare.stone) {
         return false;
     }
+    if (endSquare.special) {
+        return false;
+    }
 
 
     return true;

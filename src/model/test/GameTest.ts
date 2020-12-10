@@ -68,7 +68,10 @@ describe('My game library', () => {
         expect(validMove(gameState, 1, gameState.player1.stoneColor, 1)).is.false;
     });
 
-    it('cannot move if startSquare has no stone3', () => {
+    it('cannot move if endSquare is a special square', () => {
+        placeStoneOnBoard(gameState.board, gameState.player1, 4);
+        placeStoneOnBoard(gameState.board, gameState.player1, 1);
 
+        expect(validMove(gameState, 1, gameState.player1.stoneColor, 3)).is.false;
     });
 });
