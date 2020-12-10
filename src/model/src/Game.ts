@@ -44,7 +44,7 @@ export function generateStartingGameState(): GameState {
     };
 }
 
-export function nthSquare(board: Square[], color: Color, n: number): Square {
+export function nthSquare(board: Square[], color: Color, n: number): Square | null {
     return board.filter(square => [color, "neutral", "finish"].includes(square.squareType))[n - 1];
 }
 
@@ -84,6 +84,9 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
     const startSquare = nthSquare(gameState.board, playerColor, squareNumber);
     const endSquare = nthSquare(gameState.board, playerColor, squareNumber + diceRoll);
 
+    if (endSquare == null) {
+        return false;
+    }
     if (startSquare.stone == null) {
         return false;
     }
@@ -93,6 +96,7 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
     if (endSquare.special) {
         return false;
     }
+
 
 
     return true;

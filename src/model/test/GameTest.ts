@@ -74,4 +74,10 @@ describe('My game library', () => {
 
         expect(validMove(gameState, 1, gameState.player1.stoneColor, 3)).is.false;
     });
+
+    it('cannot move if endSquare is not a square on the board', () => {
+        placeStoneOnBoard(gameState.board, gameState.player2, 13);
+
+        expect(validMove(gameState, 1, gameState.player2.stoneColor, 4)).is.false;
+    });
 });
