@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { throwDice, generateStartingGameState, placeStoneOnBoard, moveStone, nthSquare, validMove, hasPlayerWon } from '../src/Game';
+import { throwDice, generateStartingGameState, placeStoneOnBoard, moveStone, nthSquare, validMove, hasPlayerWon, canRepeatMove } from '../src/Game';
 import { Square, GameState } from '../src/GameState';
 
 describe('My game library', () => {
@@ -100,4 +100,16 @@ describe('My game library', () => {
 
         expect(hasPlayerWon(gameState.player1)).is.true;
     });
+
+    it('does player win with 7 finished stones', () => {
+        gameState.player1.finishedStones = 7;
+
+        expect(hasPlayerWon(gameState.player1)).is.true;
+    });
+
+    it('can player repeat move on special square', () => {
+        const gameStateAfter = placeStoneOnBoard(gameState, gameState.player2, 4);
+        expect(canRepeatMove(gameStateAfter, gameStateAfter.player2, 4)).is.true;
+    });
+
 });

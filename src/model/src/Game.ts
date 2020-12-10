@@ -113,6 +113,10 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
     return true;
 }
 
+export function canRepeatMove(gameState: GameState, player: Player, squareNumber: number): boolean {
+    return nthSquare(gameState.board, player.stoneColor, squareNumber).special;
+}
+
 export function hasPlayerWon(player: Player): boolean {
     return player.finishedStones == 7;
 }
