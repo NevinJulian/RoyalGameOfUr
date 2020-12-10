@@ -10,14 +10,12 @@ describe('My game library', () => {
     });
 
     it('is able to roll four dice', () => {
-        console.log(throwDice());
         expect(throwDice()).is.below(5).and.above(-1);
     });
 
     it('is able to place stone on board', () => {
         expect(placeStoneOnBoard(gameState.board, gameState.player1, 1)).is.true;
         expect(placeStoneOnBoard(gameState.board, gameState.player2, 3)).is.true;
-        console.log(gameState);
     });
 
     it('cannot play stone if all player stones have been played', () => {
@@ -33,9 +31,7 @@ describe('My game library', () => {
     it('is able to move a stone on the board', () => {
         placeStoneOnBoard(gameState.board, gameState.player2, 1);
 
-        const gameStateAfter = moveStone(gameState, 1, gameState.player2.stoneColor, 2);
-        console.log(gameState);
-        console.log(gameStateAfter);
+        const gameStateAfter = moveStone(gameState, 1, gameState.player2, 2);
 
         const gameStateToCompare = generateStartingGameState();
         placeStoneOnBoard(gameStateToCompare.board, gameStateToCompare.player2, 3);
@@ -48,9 +44,7 @@ describe('My game library', () => {
         placeStoneOnBoard(gameState.board, gameState.player1, 5);
         placeStoneOnBoard(gameState.board, gameState.player2, 6);
 
-        const gameStateAfter = moveStone(gameState, 5, gameState.player1.stoneColor, 1);
-        console.log(gameState);
-        console.log(gameStateAfter);
+        const gameStateAfter = moveStone(gameState, 5, gameState.player1, 1);
 
         const gameStateToCompare = generateStartingGameState();
         placeStoneOnBoard(gameStateToCompare.board, gameStateToCompare.player1, 6);
@@ -79,5 +73,24 @@ describe('My game library', () => {
         placeStoneOnBoard(gameState.board, gameState.player2, 13);
 
         expect(validMove(gameState, 1, gameState.player2.stoneColor, 4)).is.false;
+    });
+
+    it('stone on finish square gets finished', () => {
+        placeStoneOnBoard(gameState.board, gameState.player2, 13);
+
+        expect(validMove(gameState, 13, gameState.player2.stoneColor, 2)).is.true;
+        expect(nthSquare(gameState.board, gameState.player2.stoneColor, 15).stone).is.null;
+
+        const gameStateAfter = moveStone(gameState, 13, gameState.player2, 2);
+        console.log(gameStateAfter);
+        expect(gameStateAfter.player2.finishedStones).to.equal(1);
+    });
+
+    it('returns null if move was invalid', () => {
+        expect(validMove(gameState, 2, gameState.player2.stoneColor, 2)).is.false;
+        expect(nthSquare(gameState.board, gameState.player2.stoneColor, 15).stone).is.null;
+
+        const gameStateAfter = moveStone(gameState, 13, gameState.player2, 2);
+        expect(gameStateAfter).to.be.null;
     });
 });

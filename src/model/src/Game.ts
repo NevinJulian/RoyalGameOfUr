@@ -1,5 +1,6 @@
 import { Square, SquareType, Player, GameState, Color } from './GameState';
 import { cloneDeep } from 'lodash';
+import { isEqual } from 'lodash';
 
 /** Return integer from 0 to 4 */
 export function throwDice(): number {
@@ -13,8 +14,8 @@ export function throwDice(): number {
 export function generateStartBoard(): Square[] {
     const specialFieldIndexes = [3, 7, 11, 17, 20];
     const finishFieldIndexes = [18, 21];
-    const blackFieldIndexes = [0, 1, 2, 3, 16, 17];
-    const whiteFieldIndexes = [4, 5, 6, 7, 19, 20];
+    const blackFieldIndexes = [0, 1, 2, 3, 16, 17, 18];
+    const whiteFieldIndexes = [4, 5, 6, 7, 19, 20, 21];
     return new Array(22).fill(undefined).map((_, i): Square => {
         return {
             stone: null,
@@ -25,12 +26,10 @@ export function generateStartBoard(): Square[] {
                 if (whiteFieldIndexes.includes(i)) {
                     return "white";
                 }
-                if (finishFieldIndexes.includes(i)) {
-                    return "finish"
-                }
                 return "neutral";
             })(),
-            special: (specialFieldIndexes.includes(i))
+            special: (specialFieldIndexes.includes(i)),
+            isFinish: (finishFieldIndexes.includes(i))
         };
     });
 }
@@ -45,7 +44,7 @@ export function generateStartingGameState(): GameState {
 }
 
 export function nthSquare(board: Square[], color: Color, n: number): Square | null {
-    return board.filter(square => [color, "neutral", "finish"].includes(square.squareType))[n - 1];
+    return board.filter(square => [color, "neutral"].includes(square.squareType))[n - 1];
 }
 
 //remove player param and replace with gameState TODO
@@ -59,24 +58,33 @@ export function placeStoneOnBoard(board: Square[], player: Player, diceRoll: num
     }
 }
 
-export function moveStone(gameStateBefore: GameState, squareNumber: number, playerColor: Color, diceRoll: number): GameState | null {
+export function moveStone(gameStateBefore: GameState, squareNumber: number, player: Player, diceRoll: number): GameState | null {
     const gameStateAfter = cloneDeep(gameStateBefore);
-    const startSquare = this.nthSquare(gameStateAfter.board, playerColor, squareNumber);
-    console.log(nthSquare);
-    if (validMove(gameStateAfter, squareNumber, playerColor, diceRoll)) {
-        console.log("hi");
+    const startSquare = this.nthSquare(gameStateAfter.board, player.stoneColor, squareNumber);
+    if (validMove(gameStateAfter, squareNumber, player.stoneColor, diceRoll)) {
         startSquare.stone = null;
-        const endSquare = this.nthSquare(gameStateAfter.board, playerColor, squareNumber + diceRoll);
+        const endSquare = this.nthSquare(gameStateAfter.board, player.stoneColor, squareNumber + diceRoll);
         if (endSquare.stone) {
             // player with stone that gets captured, needs to take it back
-            if (gameStateAfter.player1.stoneColor == endSquare.stone) {
-                gameStateAfter.player1.notYetPlayedStones++;
-            } else {
+            if (isEqual(gameStateAfter.player1, player)) {
                 gameStateAfter.player2.notYetPlayedStones++;
+            } else {
+                gameStateAfter.player1.notYetPlayedStones++;
             }
         }
-        endSquare.stone = playerColor;
+        if (endSquare.isFinish) {
+            endSquare.stone = null;
+            if (isEqual(gameStateAfter.player1, player)) {
+                gameStateAfter.player1.finishedStones++;
+            } else {
+                gameStateAfter.player2.finishedStones++;
+            }
+        } else {
+            endSquare.stone = player.stoneColor;
+        }
         return gameStateAfter;
+    } else {
+        return null;
     }
 }
 
@@ -90,6 +98,7 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
     if (startSquare.stone == null) {
         return false;
     }
+
     if (endSquare.stone == startSquare.stone) {
         return false;
     }
