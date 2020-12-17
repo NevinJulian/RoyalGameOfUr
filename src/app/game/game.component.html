@@ -1,51 +1,68 @@
 <!DOCTYPE html>
 <html>
-    <head>
 
-    </head>
-    <body>
-        <div class="grid">
-            <div class="row">
-                <div class="item item1"><img class="images" src="../assets/img/special-field.svg"></div>
-                <div class="item item2"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="item item3"><img class="images" src="../assets/img/special-field.svg"></div>
-            </div>
-            <div class="row">
-                <div class="item item4"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="item item5"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="item item6"><img class="images" src="../assets/img/field.svg"></div>
-            </div>
-            <div class="row">
-                <div class="item item7"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="item item8"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="item item9"><img class="images" src="../assets/img/field.svg"></div>
-            </div>
-            <div class="row">
-                <div class="item item10"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="item item11"><img class="images" src="../assets/img/special-field.svg"></div>
-                <div class="item item12"><img class="images" src="../assets/img/field.svg"></div>
-            </div>
-            <div class="row">
-                <div class="emptyitem item13"></div>
-                <div class="item item14"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="emptyitem item15"></div>
-            </div>
-            <div class="row">
-                <div class="emptyitem item16"></div>
-                <div class="item item17"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="emptyitem item18"></div>
-            </div>
-            <div class="row">
-                <div class="item item19"><img class="images" src="../assets/img/special-field.svg"></div>
-                <div class="item item20"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="item item21"><img class="images" src="../assets/img/special-field.svg"></div>
-            </div>
-            <div class="row">
-                <div class="item item22"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="item item23"><img class="images" src="../assets/img/field.svg"></div>
-                <div class="item item24"><img class="images" src="../assets/img/field.svg"></div>
-            </div>
+<head>
+
+</head>
+
+<body>
+    <div class="grid">
+        <div class="row">
+            <div class="item item1"><img class="images" src="../assets/img/special-field.svg"></div>
+            <div class="item item2"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item3"><img class="images" src="../assets/img/special-field.svg"></div>
         </div>
-    </body>
-</html>
+        <div class="row">
+            <div class="item item4"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item5"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item6"><img class="images" src="../assets/img/field.svg"></div>
+        </div>
+        <div class="row">
+            <div class="item item7"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item8"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item9"><img class="images" src="../assets/img/field.svg"></div>
+        </div>
+        <div class="row">
+            <div class="item item10"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item11"><img class="images" src="../assets/img/special-field.svg"></div>
+            <div class="item item12"><img class="images" src="../assets/img/field.svg"></div>
+        </div>
+        <div class="row">
+            <div class="emptyitem item13"></div>
+            <div class="item item14"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="emptyitem item15"></div>
+        </div>
+        <div class="row">
+            <div class="emptyitem item16"></div>
+            <div class="item item17"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="emptyitem item18"></div>
+        </div>
+        <div class="row">
+            <div class="item item19"><img class="images" src="../assets/img/special-field.svg"></div>
+            <div class="item item20"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item21"><img class="images" src="../assets/img/special-field.svg"></div>
+        </div>
+        <div class="row">
+            <div class="item item22"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item23"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item24"><img class="images" src="../assets/img/field.svg"></div>
+        </div>
+    </div>
 
+    <div class="player">
+        <h3>Player Black</h3>
+        Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
+        Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
+    </div>
+
+    <div class="player">
+        <h3>Player White</h3>
+        Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
+        Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
+    </div>
+
+    <button class="mat-button" (click)="throwDice()">Throw Dice</button>
+    <p>{{diceThrow}}</p>
+</body>
+
+</html>

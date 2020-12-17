@@ -10,15 +10,19 @@ import { GameState } from 'src/model/src/GameState';
 })
 
 export class GameComponent implements OnInit {
-  private gameState: GameState;
+  gameState: GameState;
+  diceThrow: number;
 
   constructor() {
     this.gameState = generateStartingGameState();
-   }
+  } *
 
-  ngOnInit(): void {
+    ngOnInit() {
     let dice = throwDice();
     console.log(dice);
   }
 
+  throwDice() {
+    this.diceThrow = throwDice();
+  }
 }
