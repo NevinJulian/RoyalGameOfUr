@@ -5,6 +5,15 @@
     grid-template-columns: 140px 140px 140px 140px 140px 140px 140px 140px;
     padding: 10px;
   }
+
+  .playergrid{
+    margin-top: 50px;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: 250px 250px;
+    padding: 10px;
+  }
+
 .item {
     font-size: 30px;
     text-align: center;

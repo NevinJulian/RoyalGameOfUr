@@ -49,19 +49,21 @@
         </div>
     </div>
 
-    <div class="player">
-        <h3>Player Black</h3>
-        Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
-        Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
+    <div class="playergrid">
+        <div class="player">
+            <h3>Player Black</h3>
+            Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
+            Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
+        </div>
+    
+        <div class="player">
+            <h3>Player White</h3>
+            Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
+            Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
+        </div>
     </div>
 
-    <div class="player">
-        <h3>Player White</h3>
-        Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
-        Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
-    </div>
-
-    <button class="mat-button" (click)="throwDice()">Throw Dice</button>
+    <button class="thorwdice" (click)="throwDice()">Throw Dice</button>
     <p>{{diceThrow}}</p>
 </body>
 
