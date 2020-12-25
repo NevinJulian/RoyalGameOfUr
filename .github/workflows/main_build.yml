@@ -1,0 +1,33 @@
+name: build_and_deploy 
+
+on:
+  push:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          lfs: true
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.1.2
+        with:
+          node-version: 14.x
+        
+      - name: Download node modules
+        run: npm install
+      - name: Build client
+        run: npm run build:prod
+
+      - name: Publish to Heroku
+        uses: akhileshns/heroku-deploy@v3.6.8
+        with:
+            heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+            heroku_app_name: "royalgameofur" 
+            heroku_email: ${{secrets.HEROKU_EMAIL}}
