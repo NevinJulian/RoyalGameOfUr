@@ -23,7 +23,7 @@ describe('My game library', () => {
         expect(placeStoneOnBoard(gameState, gameState.player1, 1)).is.null;
     });
 
-    it('cannot play stone if there is already a stone on square', () => {
+    it('cannot play stone if there is already a stone of same color on square', () => {
         const gameStateAfter = placeStoneOnBoard(gameState, gameState.player1, 1);
         expect(placeStoneOnBoard(gameStateAfter, gameState.player1, 1)).is.null;
     });
@@ -56,14 +56,14 @@ describe('My game library', () => {
         expect(validMove(gameState, 6, gameState.player1.stoneColor, 4)).is.false;
     });
 
-    it('cannot move if startSquare has same colored stone as endsquare', () => {
+    it('cannot capture if startSquare has same colored stone as endsquare', () => {
         const gameStateAfterPlacingOnce = placeStoneOnBoard(gameState, gameState.player1, 1);
         const gameStateAfterPlacingTwice = placeStoneOnBoard(gameStateAfterPlacingOnce, gameStateAfterPlacingOnce.player1, 2);
 
         expect(validMove(gameStateAfterPlacingTwice, 1, gameStateAfterPlacingTwice.player1.stoneColor, 1)).is.false;
     });
 
-    it('cannot move if endSquare is a special square', () => {
+    it('cannot capture if endSquare is a special square', () => {
         const gameStateAfterPlacingOnce = placeStoneOnBoard(gameState, gameState.player1, 4);
         const gameStateAfterPlacingTwice = placeStoneOnBoard(gameStateAfterPlacingOnce, gameStateAfterPlacingOnce.player1, 1);
 
@@ -93,12 +93,6 @@ describe('My game library', () => {
 
         const gameStateAfter = moveStone(gameState, 13, gameState.player2, 2);
         expect(gameStateAfter).to.be.null;
-    });
-
-    it('does player win with 7 finished stones', () => {
-        gameState.player1.finishedStones = 7;
-
-        expect(hasPlayerWon(gameState.player1)).is.true;
     });
 
     it('does player win with 7 finished stones', () => {
