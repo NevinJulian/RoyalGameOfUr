@@ -1,0 +1,16 @@
+.grid {
+    margin-top: 50px;
+    display: grid;
+    grid-template-rows: 33% 33% 33%;
+    grid-template-columns: 50% 50%;
+    padding: 10px;
+  }
+
+  .image{
+      margin-top: 50px;
+  }
+
+.image {
+    height: 150px;
+    margin-left: 20%;
+}

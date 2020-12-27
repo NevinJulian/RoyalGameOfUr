@@ -1,2 +1,73 @@
-<p>Game Works</p>
+<!DOCTYPE html>
+<html>
 
+<head>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="grid">
+        <div class="row">
+            <div class="item item1"><img class="images" src="../assets/img/special-field.svg"></div>
+            <div class="item item2"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item3"><img class="images" src="../assets/img/special-field.svg"></div>
+        </div>
+        <div class="row">
+            <div class="item item4"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item5"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item6"><img class="images" src="../assets/img/field.svg"></div>
+        </div>
+        <div class="row">
+            <div class="item item7"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item8"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item9"><img class="images" src="../assets/img/field.svg"></div>
+        </div>
+        <div class="row">
+            <div class="item item10"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item11"><img class="images" src="../assets/img/special-field.svg"></div>
+            <div class="item item12"><img class="images" src="../assets/img/field.svg"></div>
+        </div>
+        <div class="row">
+            <div class="emptyitem item13"></div>
+            <div class="item item14"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="emptyitem item15"></div>
+        </div>
+        <div class="row">
+            <div class="emptyitem item16"></div>
+            <div class="item item17"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="emptyitem item18"></div>
+        </div>
+        <div class="row">
+            <div class="item item19"><img class="images" src="../assets/img/special-field.svg"></div>
+            <div class="item item20"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item21"><img class="images" src="../assets/img/special-field.svg"></div>
+        </div>
+        <div class="row">
+            <div class="item item22"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item23"><img class="images" src="../assets/img/field.svg"></div>
+            <div class="item item24"><img class="images" src="../assets/img/field.svg"></div>
+        </div>
+    </div>
+
+    <div class="playergrid">
+        <div class="player">
+            <h3>Player Black</h3>
+            Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
+            Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
+        </div>
+
+        <div class="player">
+            <h3>Player White</h3>
+            Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
+            Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
+        </div>
+    </div>
+
+    <button class="thorwdice" (click)="throwDice()">Throw Dice</button>
+    <p>{{diceThrow}}</p>
+</body>
+
+</html>
