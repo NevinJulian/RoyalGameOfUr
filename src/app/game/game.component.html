@@ -64,10 +64,17 @@
             Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
             Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
         </div>
+
+        <div>
+            <div class="buttongrid">
+                <button class="thorwdice" (click)="throwDice()">Throw Dice</button>
+                <button class="plcenewstone" (click)="throwDice()">Place new Stone on Board</button>
+            </div>
+        </div>
+
+        <p class="diceresult">{{diceThrow}}</p>
     </div>
 
-    <button class="thorwdice" (click)="throwDice()">Throw Dice</button>
-    <p>{{diceThrow}}</p>
 </body>
 
 </html>
