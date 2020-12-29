@@ -106,9 +106,10 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
 
     if (endSquare.stone == startSquare.stone) {
         return false;
-    }
-    if (endSquare.special) {
-        return false;
+    } else if (endSquare.stone) {
+        if (endSquare.special) {
+            return false;
+        }
     }
     return true;
 }
@@ -121,3 +122,24 @@ export function hasPlayerWon(player: Player): boolean {
     return player.finishedStones == 7;
 }
 
+export function getPossibleMoveSquareIndexes(gameState: GameState, player: Player, diceRoll: number): Square[] {
+    let possibleMoveSquares = [];
+    for (let i = 1; i <= 14; i++) {
+        const square = nthSquare(gameState.board, player.stoneColor, i);
+        if (square.stone) {
+            if (validMove(gameState, i, player.stoneColor, diceRoll)) {
+                possibleMoveSquares.push(i);
+            }
+        }
+    }
+    return possibleMoveSquares;
+}
+
+export function canPlaceStoneOnBoard(gameState: GameState, player: Player, diceRoll: number): boolean {
+    const square = nthSquare(gameState.board, player.stoneColor, diceRoll);
+    if (!square.stone) {
+        return true;
+    } else {
+        return false;
+    }
+}

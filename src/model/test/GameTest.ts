@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { throwDice, generateStartingGameState, placeStoneOnBoard, moveStone, nthSquare, validMove, hasPlayerWon, canRepeatMove } from '../src/Game';
+import { throwDice, generateStartingGameState, placeStoneOnBoard, moveStone, nthSquare, validMove, hasPlayerWon, canRepeatMove, getPossibleMoveSquareIndexes, canPlaceStoneOnBoard } from '../src/Game';
 import { Square, GameState } from '../src/GameState';
 
 describe('My game library', () => {
@@ -106,4 +106,20 @@ describe('My game library', () => {
         expect(canRepeatMove(gameStateAfter, gameStateAfter.player2, 4)).is.true;
     });
 
+    it('can get all possible move square indexes of player', () => {
+        const gameStateAfter = placeStoneOnBoard(gameState, gameState.player2, 3);
+        expect(getPossibleMoveSquareIndexes(gameStateAfter, gameState.player2, 4)).to.be.deep.equal([3]);
+    });
+
+    it('can check if player can place stone on board', () => {
+        expect(canPlaceStoneOnBoard(gameState, gameState.player2, 4)).to.be.deep.equal(true);
+        const gameStateAfter = placeStoneOnBoard(gameState, gameState.player2, 4);
+        expect(canPlaceStoneOnBoard(gameStateAfter, gameState.player2, 4)).to.be.false
+    });
+
+    it('cannot capture enemy stone on special field', () => {
+        const gameStateAfter = placeStoneOnBoard(gameState, gameState.player2, 8);
+        const gameStateAfterPlacing = placeStoneOnBoard(gameStateAfter, gameState.player1, 6);
+        expect(validMove(gameStateAfterPlacing, 6, gameStateAfterPlacing.player1.stoneColor, 2)).false;
+    });
 });
