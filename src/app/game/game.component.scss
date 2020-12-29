@@ -21,14 +21,14 @@
     padding: 10px;
   }
 
-  .thorwdice{
+  .throwDice{
     height: 100px;
     margin-left: 10px;
     color: blue;
     border-radius: 15px;
   }
 
-  .plcenewstone{
+  .placeNewStone{
     height: 100px;
     margin-left: 10px;
     color: red;
@@ -46,6 +46,7 @@
     font-size: 30px;
     padding: 5px;
     text-align: center;
+    position: relative;
   }
 
 .emptyitem {
@@ -54,4 +55,12 @@
     height: 140px;
     font-size: 30px;
     text-align: center;
+  }
+
+  .images{
+    position: relative;
+  }
+
+  .stones{
+    position: absolute;
   }
