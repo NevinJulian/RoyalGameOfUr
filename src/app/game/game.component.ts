@@ -30,6 +30,18 @@ export class GameComponent implements OnInit {
     document.getElementsByName("1")[0].innerHTML += "<img class=\"stones\" src=\"../assets/img/black-stone.svg\">"
   }
 
+  
+downloadJSON(){
+  const downloadableJSON = JSON.stringify(this.gameState);
+  const uri = "data:text/json;charset=UTF-8," + encodeURIComponent(downloadableJSON);
+  const downloadAnchorNode = document.createElement('a');
+  downloadAnchorNode.setAttribute("href", uri);
+  downloadAnchorNode.setAttribute("download", "gamestate.json");
+  document.body.appendChild(downloadAnchorNode);
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
+}
+
   renderGameState() {
     for (let i = 0; i <= this.gameState.board.length; i++) {
       if (this.gameState.board[i].stone) {
