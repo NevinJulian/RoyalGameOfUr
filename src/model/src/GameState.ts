@@ -1,5 +1,3 @@
-import { generateStartingGameState } from './Game';
-
 export type Color = "black" | "white";
 export type SquareType = "black" | "white" | "neutral";
 
@@ -17,7 +15,7 @@ export type Player = {
 }
 
 export type GameState = {
-    player1: Player;
-    player2: Player;
+    player: Player;
+    ai: Player;
     board: Square[];
 }

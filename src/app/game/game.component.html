@@ -11,7 +11,7 @@
 <body>
     <div class="grid">
         <div class="row">
-            <div class="item" name="7"><img class="images"  src="../assets/img/special-field.svg"></div>
+            <div class="item" name="7"><img class="images" src="../assets/img/special-field.svg"></div>
             <div class="item" name="8"><img class="images" src="../assets/img/field.svg"></div>
             <div class="item" name="3"><img class="images" src="../assets/img/special-field.svg"></div>
         </div>
@@ -55,14 +55,14 @@
     <div class="playergrid">
         <div class="player">
             <h3>Player Black</h3>
-            Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
-            Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
+            Number of stones in base: {{gameState.player.notYetPlayedStones}}<br>
+            Finished stones: {{gameState.player.finishedStones}}/7<br><br>
         </div>
 
         <div class="player">
             <h3>Player White</h3>
-            Number of stones in base: {{gameState.player1.notYetPlayedStones}}<br>
-            Finished stones: {{gameState.player1.finishedStones}}/7<br><br>
+            Number of stones in base: {{gameState.ai.notYetPlayedStones}}<br>
+            Finished stones: {{gameState.ai.finishedStones}}/7<br><br>
         </div>
 
         <div>
@@ -73,7 +73,7 @@
             </div>
         </div>
 
-        <p class="diceresult">{{diceThrow}}</p>
+        <p class="diceresult">{{diceRoll}}</p>
     </div>
 
 </body>

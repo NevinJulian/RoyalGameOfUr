@@ -37,8 +37,8 @@ export function generateStartBoard(): Square[] {
 export function generateStartingGameState(): GameState {
     const STARTING_STONE_COUNT = 7;
     return {
-        player1: { stoneColor: "black", notYetPlayedStones: STARTING_STONE_COUNT, finishedStones: 0 },
-        player2: { stoneColor: "white", notYetPlayedStones: STARTING_STONE_COUNT, finishedStones: 0 },
+        player: { stoneColor: "black", notYetPlayedStones: STARTING_STONE_COUNT, finishedStones: 0 },
+        ai: { stoneColor: "white", notYetPlayedStones: STARTING_STONE_COUNT, finishedStones: 0 },
         board: generateStartBoard()
     };
 }
@@ -48,14 +48,14 @@ export function nthSquare(board: Square[], color: Color, n: number): Square | nu
 }
 
 //remove player param and replace with gameState TODO
-export function placeStoneOnBoard(gameState: GameState, player: Player, diceRoll: number): GameState {
+export function placeStoneOnBoard(gameState: GameState, player: Player, diceRoll: number): GameState | null {
     const gameStateAfter = cloneDeep(gameState);
     if (nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone == null && player.notYetPlayedStones > 0) {
         nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone = player.stoneColor;
-        if (isEqual(gameStateAfter.player1, player)) {
-            gameStateAfter.player1.notYetPlayedStones--;
+        if (isEqual(gameStateAfter.player, player)) {
+            gameStateAfter.player.notYetPlayedStones--;
         } else {
-            gameStateAfter.player2.notYetPlayedStones--;
+            gameStateAfter.ai.notYetPlayedStones--;
         }
     } else {
         return null;
@@ -65,24 +65,24 @@ export function placeStoneOnBoard(gameState: GameState, player: Player, diceRoll
 
 export function moveStone(gameStateBefore: GameState, squareNumber: number, player: Player, diceRoll: number): GameState | null {
     const gameStateAfter = cloneDeep(gameStateBefore);
-    const startSquare = this.nthSquare(gameStateAfter.board, player.stoneColor, squareNumber);
+    const startSquare = nthSquare(gameStateAfter.board, player.stoneColor, squareNumber);
     if (validMove(gameStateAfter, squareNumber, player.stoneColor, diceRoll)) {
         startSquare.stone = null;
-        const endSquare = this.nthSquare(gameStateAfter.board, player.stoneColor, squareNumber + diceRoll);
+        const endSquare = nthSquare(gameStateAfter.board, player.stoneColor, squareNumber + diceRoll);
         if (endSquare.stone) {
             // player with stone that gets captured, needs to take it back
-            if (isEqual(gameStateAfter.player1, player)) {
-                gameStateAfter.player2.notYetPlayedStones++;
+            if (isEqual(gameStateAfter.player, player)) {
+                gameStateAfter.ai.notYetPlayedStones++;
             } else {
-                gameStateAfter.player1.notYetPlayedStones++;
+                gameStateAfter.player.notYetPlayedStones++;
             }
         }
         if (endSquare.isFinish) {
             endSquare.stone = null;
-            if (isEqual(gameStateAfter.player1, player)) {
-                gameStateAfter.player1.finishedStones++;
+            if (isEqual(gameStateAfter.player, player)) {
+                gameStateAfter.player.finishedStones++;
             } else {
-                gameStateAfter.player2.finishedStones++;
+                gameStateAfter.ai.finishedStones++;
             }
         } else {
             endSquare.stone = player.stoneColor;
