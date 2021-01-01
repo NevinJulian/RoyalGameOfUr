@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { generateStartingGameState, throwDice, moveStone, placeStoneOnBoard } from 'src/model/src/Game';
+import { generateStartingGameState, throwDice, moveStone, placeStoneOnBoard, getPossibleMoveSquareIndexes } from 'src/model/src/Game';
 import { GameState, Player } from 'src/model/src/GameState';
 
 
@@ -30,37 +30,72 @@ export class GameComponent implements OnInit {
 
   //Add AI turn | move on neutral field
   placeStone(): boolean {
+    let validMove = false;
+
     const gameStateAfter = placeStoneOnBoard(this.gameState, this.gameState.player, this.diceRoll);
     if (gameStateAfter != null) {
       this.gameStateHistory.push(gameStateAfter);
       this.gameState = gameStateAfter;
       this.renderGameState();
-      this.enableDiceRollButton();
-      this.diceRoll = 0;
-      return true;
+
+      validMove = true;
     }
-    return false;
+
+    this.placeAIStone();
+
+    this.enableDiceRollButton();
+    this.diceRoll = 0;
+
+    return validMove;
   }
 
   //Add AI turn | move on neutral field
-  moveStone(squareNumber: number, playerToMove: Player): boolean {
-    console.log("yeet");
-    console.log(squareNumber);
-
-    const nthSquare = this.convertSquareNumberToNthSquareOfPlayer(squareNumber, playerToMove);
+  moveStone(squareNumber: number): boolean {
+    const nthSquare = this.convertSquareNumberToNthSquareOfPlayer(squareNumber, this.gameState.player);
 
     const gameStateAfter = moveStone(this.gameState, nthSquare, this.gameState.player, this.diceRoll);
     if (gameStateAfter != null) {
-      console.log("yeet2");
       this.gameStateHistory.push(gameStateAfter);
       this.gameState = gameStateAfter;
       this.renderGameState();
+
+      this.placeAIStone();
+
       this.enableDiceRollButton();
       this.diceRoll = 0;
       return true;
     }
     return false;
   }
+
+  placeAIStone() {
+    this.throwDice();
+    const gameStateAfter = placeStoneOnBoard(this.gameState, this.gameState.ai, this.diceRoll);
+    if (gameStateAfter != null) {
+      this.gameStateHistory.push(gameStateAfter);
+      this.gameState = gameStateAfter;
+      this.renderGameState();
+    }
+    else {
+      this.moveAIStone();
+    }
+  }
+
+  moveAIStone() {
+    this.throwDice();
+    const possibleMoveSquareIndexes = getPossibleMoveSquareIndexes(this.gameState, this.gameState.ai, this.diceRoll);
+
+    if (possibleMoveSquareIndexes.length != 0) {
+      const gameStateAfter = moveStone(this.gameState, possibleMoveSquareIndexes[0], this.gameState.ai, this.diceRoll);
+      if (gameStateAfter != null) {
+        this.gameStateHistory.push(gameStateAfter);
+        this.gameState = gameStateAfter;
+        this.renderGameState();
+      }
+    }
+  }
+
+
 
   convertSquareNumberToNthSquareOfPlayer(squareNumber, playerToMove): number {
     if (playerToMove == this.gameState.player) {
@@ -111,22 +146,22 @@ export class GameComponent implements OnInit {
           if (square.special) {
             document.getElementsByName(i.toString())[0].innerHTML = `<img name="blackStoneImg_${i}" class="stones" src="../assets/img/black_special.svg">`
             document.getElementsByName("blackStoneImg_" + i)[0].addEventListener("click", (e) => {
-              this.moveStone(i, this.gameState.player);
+              this.moveStone(i);
             });
           }
           else {
             document.getElementsByName(i.toString())[0].innerHTML = `<img name="blackStoneImg_${i}" class="stones" src="../assets/img/black_normal.svg">`
             document.getElementsByName("blackStoneImg_" + i)[0].addEventListener("click", (e) => {
-              this.moveStone(i, this.gameState.player);
+              this.moveStone(i);
             });
           }
         }
         if (square.stone == "white") {
           if (square.special) {
-            document.getElementsByName(i.toString())[0].innerHTML = `<img class=\"stones\" src=\"../assets/img/white_special.svg\" (click)=\"moveStone(${i + 1}})\">`
+            document.getElementsByName(i.toString())[0].innerHTML = `<img class=\"stones\" src=\"../assets/img/white_special.svg\">`
           }
           else {
-            document.getElementsByName(i.toString())[0].innerHTML = `<img class=\"stones\" src=\"../assets/img/white_normal.svg\" (click)=\"moveStone(${i + 1})\">`
+            document.getElementsByName(i.toString())[0].innerHTML = `<img class=\"stones\" src=\"../assets/img/white_normal.svg\">`
           }
         }
 

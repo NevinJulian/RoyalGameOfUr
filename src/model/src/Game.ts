@@ -50,16 +50,21 @@ export function nthSquare(board: Square[], color: Color, n: number): Square | nu
 //remove player param and replace with gameState TODO
 export function placeStoneOnBoard(gameState: GameState, player: Player, diceRoll: number): GameState | null {
     const gameStateAfter = cloneDeep(gameState);
-    if (nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone == null && player.notYetPlayedStones > 0) {
-        nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone = player.stoneColor;
-        if (isEqual(gameStateAfter.player, player)) {
-            gameStateAfter.player.notYetPlayedStones--;
+    if (nthSquare(gameStateAfter.board, player.stoneColor, diceRoll) != null) {
+        if (nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone == null && player.notYetPlayedStones > 0) {
+            nthSquare(gameStateAfter.board, player.stoneColor, diceRoll).stone = player.stoneColor;
+            if (isEqual(gameStateAfter.player, player)) {
+                gameStateAfter.player.notYetPlayedStones--;
+            } else {
+                gameStateAfter.ai.notYetPlayedStones--;
+            }
         } else {
-            gameStateAfter.ai.notYetPlayedStones--;
+            return null;
         }
     } else {
         return null;
     }
+
     return gameStateAfter;
 }
 
@@ -122,7 +127,7 @@ export function hasPlayerWon(player: Player): boolean {
     return player.finishedStones == 7;
 }
 
-export function getPossibleMoveSquareIndexes(gameState: GameState, player: Player, diceRoll: number): Square[] {
+export function getPossibleMoveSquareIndexes(gameState: GameState, player: Player, diceRoll: number): number[] {
     let possibleMoveSquares = [];
     for (let i = 1; i <= 14; i++) {
         const square = nthSquare(gameState.board, player.stoneColor, i);
