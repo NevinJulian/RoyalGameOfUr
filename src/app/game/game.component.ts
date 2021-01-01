@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { generateStartingGameState, throwDice, moveStone, placeStoneOnBoard } from 'src/model/src/Game';
-import { GameState } from 'src/model/src/GameState';
+import { GameState, Player } from 'src/model/src/GameState';
 
 
 @Component({
@@ -43,10 +43,15 @@ export class GameComponent implements OnInit {
   }
 
   //Add AI turn | move on neutral field
-  moveStone(squareNumber: number): boolean {
+  moveStone(squareNumber: number, playerToMove: Player): boolean {
     console.log("yeet");
-    const gameStateAfter = moveStone(this.gameState, squareNumber, this.gameState.player, this.diceRoll);
+    console.log(squareNumber);
+
+    const nthSquare = this.convertSquareNumberToNthSquareOfPlayer(squareNumber, playerToMove);
+
+    const gameStateAfter = moveStone(this.gameState, nthSquare, this.gameState.player, this.diceRoll);
     if (gameStateAfter != null) {
+      console.log("yeet2");
       this.gameStateHistory.push(gameStateAfter);
       this.gameState = gameStateAfter;
       this.renderGameState();
@@ -55,6 +60,25 @@ export class GameComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  convertSquareNumberToNthSquareOfPlayer(squareNumber, playerToMove): number {
+    if (playerToMove == this.gameState.player) {
+      if (squareNumber <= 3) {
+        return squareNumber + 1;
+      }
+      else if (squareNumber >= 8 && squareNumber <= 18) {
+        return squareNumber - 3;
+      }
+    }
+    if (playerToMove == this.gameState.ai) {
+      if (squareNumber > 3 && squareNumber <= 15) {
+        return squareNumber - 3;
+      }
+      else if (squareNumber > 18 && squareNumber <= 21) {
+        return squareNumber - 6;
+      }
+    }
   }
 
   disableDiceRollButton() {
@@ -87,13 +111,13 @@ export class GameComponent implements OnInit {
           if (square.special) {
             document.getElementsByName(i.toString())[0].innerHTML = `<img name="blackStoneImg_${i}" class="stones" src="../assets/img/black_special.svg">`
             document.getElementsByName("blackStoneImg_" + i)[0].addEventListener("click", (e) => {
-              this.moveStone(i + 1);
+              this.moveStone(i, this.gameState.player);
             });
           }
           else {
             document.getElementsByName(i.toString())[0].innerHTML = `<img name="blackStoneImg_${i}" class="stones" src="../assets/img/black_normal.svg">`
             document.getElementsByName("blackStoneImg_" + i)[0].addEventListener("click", (e) => {
-              this.moveStone(i + 1);
+              this.moveStone(i, this.gameState.player);
             });
           }
         }
