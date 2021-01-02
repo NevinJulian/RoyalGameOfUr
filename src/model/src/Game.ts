@@ -47,7 +47,6 @@ export function nthSquare(board: Square[], color: Color, n: number): Square | nu
     return board.filter(square => [color, "neutral"].includes(square.squareType))[n - 1];
 }
 
-//remove player param and replace with gameState TODO
 export function placeStoneOnBoard(gameState: GameState, player: Player, diceRoll: number): GameState | null {
     const gameStateAfter = cloneDeep(gameState);
     if (nthSquare(gameStateAfter.board, player.stoneColor, diceRoll) != null) {

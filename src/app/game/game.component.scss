@@ -10,28 +10,21 @@
     margin-top: 50px;
     justify-content: center;
     display: grid;
-    grid-template-columns: 250px 250px 400px;
+    grid-template-columns: 250px 250px 530px;
     padding: 10px;
   }
 
   .buttongrid{
     justify-content: center;
     display: grid;
-    grid-template-columns: 125px 125px 125px;
+    grid-template-columns: 125px 125px 125px 125px;
     padding: 10px;
   }
 
-  .throwDice{
+  .playButtons{
     height: 100px;
     margin-left: 10px;
-    color: blue;
-    border-radius: 15px;
-  }
-
-  .placeNewStone{
-    height: 100px;
-    margin-left: 10px;
-    color: red;
+    color: black;
     border-radius: 15px;
   }
 

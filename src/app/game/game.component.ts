@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { generateStartingGameState, throwDice, moveStone, placeStoneOnBoard, getPossibleMoveSquareIndexes } from 'src/model/src/Game';
+import { generateStartingGameState, throwDice, moveStone, placeStoneOnBoard, getPossibleMoveSquareIndexes, nthSquare, canPlaceStoneOnBoard } from 'src/model/src/Game';
 import { GameState, Player } from 'src/model/src/GameState';
-
+import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-game',
@@ -23,14 +23,34 @@ export class GameComponent implements OnInit {
     console.log(dice);
   }
 
+  skipTurn() {
+    this.placeAIStone();
+    this.disableSkipTurnButton();
+    this.enableDiceRollButton();
+  }
+
+  canSkipTurn(): boolean {
+    if (this.diceRoll == 0) {
+      return true;
+    } else if (getPossibleMoveSquareIndexes(this.gameState, this.gameState.player, this.diceRoll).length == 0 && canPlaceStoneOnBoard(this.gameState, this.gameState.player, this.diceRoll) == false) {
+      console.log("babedi");
+      return true;
+    }
+    return false;
+  }
+
   throwDice() {
     this.diceRoll = throwDice();
     this.disableDiceRollButton();
+
+    if (this.canSkipTurn()) {
+      this.enableSkipTurnButton();
+    }
   }
 
   //Add AI turn | move on neutral field
   placeStone(): boolean {
-    let validMove = false;
+    let isAITurn = true;
 
     const gameStateAfter = placeStoneOnBoard(this.gameState, this.gameState.player, this.diceRoll);
     if (gameStateAfter != null) {
@@ -38,28 +58,42 @@ export class GameComponent implements OnInit {
       this.gameState = gameStateAfter;
       this.renderGameState();
 
-      validMove = true;
+      if (nthSquare(gameStateAfter.board, gameStateAfter.player.stoneColor, this.diceRoll).special) {
+        isAITurn = false;
+      }
+
+      if (isAITurn) {
+        this.placeAIStone();
+      }
+
+      this.enableDiceRollButton();
+      this.diceRoll = 0;
+
+      return true;
     }
 
-    this.placeAIStone();
-
-    this.enableDiceRollButton();
-    this.diceRoll = 0;
-
-    return validMove;
+    return false;
   }
 
   //Add AI turn | move on neutral field
   moveStone(squareNumber: number): boolean {
-    const nthSquare = this.convertSquareNumberToNthSquareOfPlayer(squareNumber, this.gameState.player);
+    const startSquare = this.convertSquareNumberToNthSquareOfPlayer(squareNumber, this.gameState.player);
 
-    const gameStateAfter = moveStone(this.gameState, nthSquare, this.gameState.player, this.diceRoll);
+    const gameStateAfter = moveStone(this.gameState, startSquare, this.gameState.player, this.diceRoll);
     if (gameStateAfter != null) {
       this.gameStateHistory.push(gameStateAfter);
       this.gameState = gameStateAfter;
+
       this.renderGameState();
 
-      this.placeAIStone();
+      const endSquare = startSquare + this.diceRoll;
+
+      if (!nthSquare(gameStateAfter.board, gameStateAfter.player.stoneColor, endSquare).special) {
+        setTimeout(() => {
+          this.placeAIStone();
+        },
+          1000);
+      }
 
       this.enableDiceRollButton();
       this.diceRoll = 0;
@@ -69,20 +103,29 @@ export class GameComponent implements OnInit {
   }
 
   placeAIStone() {
-    this.throwDice();
+    this.diceRoll = throwDice();
     const gameStateAfter = placeStoneOnBoard(this.gameState, this.gameState.ai, this.diceRoll);
     if (gameStateAfter != null) {
       this.gameStateHistory.push(gameStateAfter);
       this.gameState = gameStateAfter;
       this.renderGameState();
+
+      if (nthSquare(gameStateAfter.board, gameStateAfter.ai.stoneColor, this.diceRoll).special) {
+        setTimeout(() => {
+          this.placeAIStone();
+        },
+          1000);
+      }
     }
     else {
       this.moveAIStone();
     }
+
+    this.diceRoll = 0;
   }
 
   moveAIStone() {
-    this.throwDice();
+    this.diceRoll = throwDice();
     const possibleMoveSquareIndexes = getPossibleMoveSquareIndexes(this.gameState, this.gameState.ai, this.diceRoll);
 
     if (possibleMoveSquareIndexes.length != 0) {
@@ -91,11 +134,13 @@ export class GameComponent implements OnInit {
         this.gameStateHistory.push(gameStateAfter);
         this.gameState = gameStateAfter;
         this.renderGameState();
+
+        if (nthSquare(gameStateAfter.board, gameStateAfter.ai.stoneColor, possibleMoveSquareIndexes[0] + this.diceRoll).special) {
+          this.placeAIStone();
+        }
       }
     }
   }
-
-
 
   convertSquareNumberToNthSquareOfPlayer(squareNumber, playerToMove): number {
     if (playerToMove == this.gameState.player) {
@@ -125,6 +170,18 @@ export class GameComponent implements OnInit {
   enableDiceRollButton() {
     if (document.getElementsByClassName("throwDice")[0].hasAttribute("disabled")) {
       document.getElementsByClassName("throwDice")[0].removeAttribute("disabled");
+    }
+  }
+
+  enableSkipTurnButton() {
+    if (document.getElementsByClassName("skipTurn")[0].hasAttribute("disabled")) {
+      document.getElementsByClassName("skipTurn")[0].removeAttribute("disabled");
+    }
+  }
+
+  disableSkipTurnButton() {
+    if (!document.getElementsByClassName("skipTurn")[0].hasAttribute("disabled")) {
+      document.getElementsByClassName("skipTurn")[0].setAttribute("disabled", "disabled");
     }
   }
 
