@@ -63,11 +63,18 @@ export class GameComponent implements OnInit {
       }
 
       if (isAITurn) {
-        this.placeAIStone();
-      }
+        setTimeout(() => {
+          this.placeAIStone();
 
-      this.enableDiceRollButton();
-      this.diceRoll = 0;
+          this.enableDiceRollButton();
+          this.diceRoll = 0;
+        },
+          1000);
+      }
+      else {
+        this.enableDiceRollButton();
+        this.diceRoll = 0;
+      }
 
       return true;
     }
@@ -91,12 +98,17 @@ export class GameComponent implements OnInit {
       if (!nthSquare(gameStateAfter.board, gameStateAfter.player.stoneColor, endSquare).special) {
         setTimeout(() => {
           this.placeAIStone();
+
+          this.enableDiceRollButton();
+          this.diceRoll = 0;
         },
           1000);
       }
+      else {
+        this.enableDiceRollButton();
+        this.diceRoll = 0;
+      }
 
-      this.enableDiceRollButton();
-      this.diceRoll = 0;
       return true;
     }
     return false;
@@ -122,6 +134,10 @@ export class GameComponent implements OnInit {
     }
 
     this.diceRoll = 0;
+  }
+
+  async delay(ms: number) {
+    await new Promise<void>(resolve => setTimeout(() => resolve(), ms)).then(() => console.log("fired"));
   }
 
   moveAIStone() {
