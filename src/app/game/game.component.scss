@@ -10,14 +10,14 @@
     margin-top: 50px;
     justify-content: center;
     display: grid;
-    grid-template-columns: 250px 250px 530px;
+    grid-template-columns: 250px 250px 655px;
     padding: 10px;
   }
 
   .buttongrid{
     justify-content: center;
     display: grid;
-    grid-template-columns: 125px 125px 125px 125px;
+    grid-template-columns: 125px 125px 125px 125px 125px;
     padding: 10px;
   }
 
@@ -56,4 +56,10 @@
 
   .stones{
     position: absolute;
+  }
+
+  .hidden {
+    visibility: hidden;
+    width: 1px;
+    height: 1px;
   }

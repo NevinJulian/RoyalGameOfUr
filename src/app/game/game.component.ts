@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { generateStartingGameState, throwDice, moveStone, placeStoneOnBoard, getPossibleMoveSquareIndexes, nthSquare, canPlaceStoneOnBoard } from 'src/model/src/Game';
 import { GameState, Player } from 'src/model/src/GameState';
 import { delay } from 'rxjs/operators';
+import { IfStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-game',
@@ -92,7 +93,6 @@ export class GameComponent implements OnInit {
       this.gameState = gameStateAfter;
 
       this.renderGameState();
-
       const endSquare = startSquare + this.diceRoll;
 
       if (!nthSquare(gameStateAfter.board, gameStateAfter.player.stoneColor, endSquare).special) {
@@ -209,6 +209,27 @@ export class GameComponent implements OnInit {
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
+  }
+
+  loadgame() {
+    document.getElementById('upload-file').click();
+  }
+
+  addAttachment(fileInput: any) {
+    const gameState = fileInput.target.files[0];
+
+    if (gameState != null) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const json = JSON.parse(reader.result.toString());
+        if (json.hasOwnProperty('player') && json.hasOwnProperty('ai') && json.hasOwnProperty('board')) {
+          this.gameState = json;
+          this.renderGameState();
+        }
+      }
+
+      reader.readAsText(gameState);
+    }
   }
 
   renderGameState() {
