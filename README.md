@@ -11,6 +11,9 @@ Je nachdem wie viel Zeit bleibt werden wir die Möglichkeit hinzufügen, Online 
 - Angular
 - NodeJS
 
+# App auf Heroku
+https://royalgameofur.herokuapp.com/
+
 # RoyalGameOfUr
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.0.
