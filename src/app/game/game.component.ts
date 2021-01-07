@@ -17,10 +17,10 @@ export class GameComponent implements OnInit {
   gameStateHistory: GameState[] = [];
 
   constructor(public router: Router) {
-    this.gameState = generateStartingGameState();
-  } *
+  }
 
-    ngOnInit() {
+  ngOnInit() {
+    this.gameState = generateStartingGameState();
     let dice = throwDice();
     console.log(dice);
   }
@@ -88,6 +88,10 @@ export class GameComponent implements OnInit {
     if (gameStateAfter != null) {
       this.gameStateHistory.push(gameStateAfter);
       this.gameState = gameStateAfter;
+      if (hasPlayerWon(gameStateAfter.player)) {
+        this.navigateToEndscreen(true);
+        return true;
+      }
 
       this.renderGameState();
       const endSquare = startSquare + this.diceRoll;
@@ -104,9 +108,6 @@ export class GameComponent implements OnInit {
       else {
         this.enableDiceRollButton();
         this.diceRoll = 0;
-      }
-      if (hasPlayerWon(gameStateAfter.player)) {
-        this.navigateToEndscreen(true);
       }
 
       return true;
@@ -128,6 +129,10 @@ export class GameComponent implements OnInit {
     if (gameStateAfter != null) {
       this.gameStateHistory.push(gameStateAfter);
       this.gameState = gameStateAfter;
+      if (hasPlayerWon(gameStateAfter.ai)) {
+        this.navigateToEndscreen(false);
+        return;
+      }
       this.renderGameState();
 
       if (nthSquare(gameStateAfter.board, gameStateAfter.ai.stoneColor, this.diceRoll).special) {

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-endscreen',
@@ -9,10 +9,14 @@ import { ActivatedRoute } from '@angular/router';
 export class EndscreenComponent implements OnInit {
   message: String;
 
-  constructor(public activatedRoute: ActivatedRoute) { }
+  constructor(public activatedRoute: ActivatedRoute, public router: Router) { }
 
   ngOnInit(): void {
     this.message = window.history.state.message;
+  }
+
+  navigateToGame(): void {
+    this.router.navigateByUrl("");
   }
 
 }
