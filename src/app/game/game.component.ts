@@ -26,7 +26,6 @@ export class GameComponent implements OnInit {
 
   skipTurn(): void {
     this.placeAIStone();
-    this.disableSkipTurnButton();
     this.enableDiceRollButton();
   }
 
@@ -44,9 +43,7 @@ export class GameComponent implements OnInit {
     this.diceRoll = throwDice();
     this.disableDiceRollButton();
 
-    if (this.canSkipTurn()) {
-      this.enableSkipTurnButton();
-    } else {
+    if (!this.canSkipTurn()) {
       this.enablePlaceStoneOnBoardButton();
     }
   }
@@ -165,6 +162,11 @@ export class GameComponent implements OnInit {
       if (gameStateAfter != null) {
         this.gameStateHistory.push(gameStateAfter);
         this.gameState = gameStateAfter;
+
+        if (hasPlayerWon(gameStateAfter.ai)) {
+          this.navigateToEndscreen(false);
+        }
+
         this.renderGameState();
 
         if (nthSquare(gameStateAfter.board, gameStateAfter.ai.stoneColor, possibleMoveSquareIndexes[0] + this.diceRoll).special) {
@@ -214,18 +216,6 @@ export class GameComponent implements OnInit {
   enablePlaceStoneOnBoardButton(): void {
     if (document.getElementsByClassName("placeStone")[0].hasAttribute("disabled")) {
       document.getElementsByClassName("placeStone")[0].removeAttribute("disabled");
-    }
-  }
-
-  enableSkipTurnButton(): void {
-    if (document.getElementsByClassName("skipTurn")[0].hasAttribute("disabled")) {
-      document.getElementsByClassName("skipTurn")[0].removeAttribute("disabled");
-    }
-  }
-
-  disableSkipTurnButton(): void {
-    if (!document.getElementsByClassName("skipTurn")[0].hasAttribute("disabled")) {
-      document.getElementsByClassName("skipTurn")[0].setAttribute("disabled", "disabled");
     }
   }
 
