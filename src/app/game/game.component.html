@@ -74,10 +74,13 @@
                 <button class="playButtons" (click)="loadgame()">Load Gamestate</button>
             </div>
 
-            <input class="hidden" type="file" id="upload-file" name="upload-file" accept=".json" ngf-max-size="5KB" (change)="addAttachment($event)">
+            <input class="hidden" type="file" id="upload-file" name="upload-file" accept=".json" ngf-max-size="5KB"
+                (change)="addAttachment($event)">
         </div>
 
         <p class="diceresult">{{diceRoll}}</p>
+
+        <button class="testbutton" (click)="navigateToEndscreen(true)">test</button>
     </div>
 
 </body>

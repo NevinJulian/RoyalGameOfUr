@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { generateStartingGameState, throwDice, moveStone, placeStoneOnBoard, getPossibleMoveSquareIndexes, nthSquare, canPlaceStoneOnBoard } from 'src/model/src/Game';
+import { generateStartingGameState, throwDice, moveStone, placeStoneOnBoard, getPossibleMoveSquareIndexes, nthSquare, canPlaceStoneOnBoard, hasPlayerWon } from 'src/model/src/Game';
 import { GameState, Player } from 'src/model/src/GameState';
 import { delay } from 'rxjs/operators';
 import { IfStmt } from '@angular/compiler';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -15,7 +16,7 @@ export class GameComponent implements OnInit {
   diceRoll: number;
   gameStateHistory: GameState[] = [];
 
-  constructor() {
+  constructor(public router: Router) {
     this.gameState = generateStartingGameState();
   } *
 
@@ -49,7 +50,6 @@ export class GameComponent implements OnInit {
     }
   }
 
-  //Add AI turn | move on neutral field
   placeStone(): boolean {
     let isAITurn = true;
 
@@ -62,7 +62,6 @@ export class GameComponent implements OnInit {
       if (nthSquare(gameStateAfter.board, gameStateAfter.player.stoneColor, this.diceRoll).special) {
         isAITurn = false;
       }
-
       if (isAITurn) {
         setTimeout(() => {
           this.placeAIStone();
@@ -76,14 +75,12 @@ export class GameComponent implements OnInit {
         this.enableDiceRollButton();
         this.diceRoll = 0;
       }
-
       return true;
     }
 
     return false;
   }
 
-  //Add AI turn | move on neutral field
   moveStone(squareNumber: number): boolean {
     const startSquare = this.convertSquareNumberToNthSquareOfPlayer(squareNumber, this.gameState.player);
 
@@ -108,13 +105,24 @@ export class GameComponent implements OnInit {
         this.enableDiceRollButton();
         this.diceRoll = 0;
       }
+      if (hasPlayerWon(gameStateAfter.player)) {
+        this.navigateToEndscreen(true);
+      }
 
       return true;
     }
     return false;
   }
 
-  placeAIStone() {
+  navigateToEndscreen(hasPlayerWon: boolean): void {
+    if (hasPlayerWon) {
+      this.router.navigateByUrl('endscreen', { state: { message: "Good job! You won!" } });
+    } else {
+      this.router.navigateByUrl('endscreen', { state: { message: "Noob." } });
+    }
+  }
+
+  placeAIStone(): void {
     this.diceRoll = throwDice();
     const gameStateAfter = placeStoneOnBoard(this.gameState, this.gameState.ai, this.diceRoll);
     if (gameStateAfter != null) {
@@ -136,11 +144,11 @@ export class GameComponent implements OnInit {
     this.diceRoll = 0;
   }
 
-  async delay(ms: number) {
+  async delay(ms: number): Promise<void> {
     await new Promise<void>(resolve => setTimeout(() => resolve(), ms)).then(() => console.log("fired"));
   }
 
-  moveAIStone() {
+  moveAIStone(): void {
     this.diceRoll = throwDice();
     const possibleMoveSquareIndexes = getPossibleMoveSquareIndexes(this.gameState, this.gameState.ai, this.diceRoll);
 
@@ -177,31 +185,31 @@ export class GameComponent implements OnInit {
     }
   }
 
-  disableDiceRollButton() {
+  disableDiceRollButton(): void {
     if (!document.getElementsByClassName("throwDice")[0].hasAttribute("disabled")) {
       document.getElementsByClassName("throwDice")[0].setAttribute("disabled", "disabled");
     }
   }
 
-  enableDiceRollButton() {
+  enableDiceRollButton(): void {
     if (document.getElementsByClassName("throwDice")[0].hasAttribute("disabled")) {
       document.getElementsByClassName("throwDice")[0].removeAttribute("disabled");
     }
   }
 
-  enableSkipTurnButton() {
+  enableSkipTurnButton(): void {
     if (document.getElementsByClassName("skipTurn")[0].hasAttribute("disabled")) {
       document.getElementsByClassName("skipTurn")[0].removeAttribute("disabled");
     }
   }
 
-  disableSkipTurnButton() {
+  disableSkipTurnButton(): void {
     if (!document.getElementsByClassName("skipTurn")[0].hasAttribute("disabled")) {
       document.getElementsByClassName("skipTurn")[0].setAttribute("disabled", "disabled");
     }
   }
 
-  downloadJSON() {
+  downloadJSON(): void {
     const downloadableJSON = JSON.stringify(this.gameState);
     const downloadAnchorNode = document.createElement('a');
     downloadAnchorNode.setAttribute("href", "data:text/json;charset=UTF-8," + encodeURIComponent(downloadableJSON));
@@ -211,11 +219,11 @@ export class GameComponent implements OnInit {
     downloadAnchorNode.remove();
   }
 
-  loadgame() {
+  loadgame(): void {
     document.getElementById('upload-file').click();
   }
 
-  addAttachment(fileInput: any) {
+  addAttachment(fileInput: any): void {
     const gameState = fileInput.target.files[0];
 
     if (gameState != null) {
@@ -232,7 +240,7 @@ export class GameComponent implements OnInit {
     }
   }
 
-  renderGameState() {
+  renderGameState(): void {
     for (let i = 0; i < this.gameState.board.length; i++) {
       const square = this.gameState.board[i];
       if (square.stone != null) {
