@@ -23,7 +23,6 @@ export class GameComponent implements OnInit {
     this.gameState = generateStartingGameState();
     this.gameStateHistory.push(this.gameState);
     let dice = throwDice();
-    console.log(dice);
   }
 
   skipTurn() {
@@ -48,6 +47,8 @@ export class GameComponent implements OnInit {
 
     if (this.canSkipTurn()) {
       this.enableSkipTurnButton();
+    } else {
+      this.enablePlaceStoneOnBoardButton();
     }
   }
 
@@ -56,6 +57,7 @@ export class GameComponent implements OnInit {
 
     const gameStateAfter = placeStoneOnBoard(this.gameState, this.gameState.player, this.diceRoll);
     if (gameStateAfter != null) {
+      this.disablePlaceStoneOnBoardButton();
       this.gameStateHistory.push(gameStateAfter);
       this.gameState = gameStateAfter;
       this.renderGameState();
@@ -87,6 +89,7 @@ export class GameComponent implements OnInit {
 
     const gameStateAfter = moveStone(this.gameState, startSquare, this.gameState.player, this.diceRoll);
     if (gameStateAfter != null) {
+      this.disablePlaceStoneOnBoardButton();
       this.gameStateHistory.push(gameStateAfter);
       this.gameState = gameStateAfter;
       if (hasPlayerWon(gameStateAfter.player)) {
@@ -203,6 +206,18 @@ export class GameComponent implements OnInit {
     }
   }
 
+  disablePlaceStoneOnBoardButton(): void {
+    if (!document.getElementsByClassName("placeStone")[0].hasAttribute("disabled")) {
+      document.getElementsByClassName("placeStone")[0].setAttribute("disabled", "disabled");
+    }
+  }
+
+  enablePlaceStoneOnBoardButton(): void {
+    if (document.getElementsByClassName("placeStone")[0].hasAttribute("disabled")) {
+      document.getElementsByClassName("placeStone")[0].removeAttribute("disabled");
+    }
+  }
+
   enableSkipTurnButton(): void {
     if (document.getElementsByClassName("skipTurn")[0].hasAttribute("disabled")) {
       document.getElementsByClassName("skipTurn")[0].removeAttribute("disabled");
@@ -292,6 +307,7 @@ export class GameComponent implements OnInit {
     if (this.gameStateHistory.length >= 2) {
       this.gameState = this.gameStateHistory[this.gameStateHistory.length - 2];
       this.gameStateHistory.splice(-1, 1);
+      this.enableDiceRollButton();
       this.renderGameState();
     }
   }

@@ -10,14 +10,14 @@
     margin-top: 50px;
     justify-content: center;
     display: grid;
-    grid-template-columns: 250px 250px 655px;
+    grid-template-columns: 250px 250px 780px;
     padding: 10px;
   }
 
   .buttongrid{
     justify-content: center;
     display: grid;
-    grid-template-columns: 125px 125px 125px 125px 125px;
+    grid-template-columns: 125px 125px 125px 125px 125px 125px;
     padding: 10px;
   }
 
@@ -27,7 +27,6 @@
     color: black;
     border-radius: 15px;
   }
-
 
   .diceresult{
     height: 100px;
