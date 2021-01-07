@@ -21,6 +21,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit() {
     this.gameState = generateStartingGameState();
+    this.gameStateHistory.push(this.gameState);
     let dice = throwDice();
     console.log(dice);
   }
@@ -34,8 +35,8 @@ export class GameComponent implements OnInit {
   canSkipTurn(): boolean {
     if (this.diceRoll == 0) {
       return true;
-    } else if (getPossibleMoveSquareIndexes(this.gameState, this.gameState.player, this.diceRoll).length == 0 && canPlaceStoneOnBoard(this.gameState, this.gameState.player, this.diceRoll) == false) {
-      console.log("babedi");
+    } else if (getPossibleMoveSquareIndexes(this.gameState, this.gameState.player, this.diceRoll).length == 0
+      && canPlaceStoneOnBoard(this.gameState, this.gameState.player, this.diceRoll) == false) {
       return true;
     }
     return false;
@@ -284,6 +285,14 @@ export class GameComponent implements OnInit {
           document.getElementsByName(i.toString())[0].innerHTML = `<img class="images" src="../assets/img/field.svg">`
         }
       }
+    }
+  }
+
+  goToPreviousGameState(): void {
+    if (this.gameStateHistory.length >= 2) {
+      this.gameState = this.gameStateHistory[this.gameStateHistory.length - 2];
+      this.gameStateHistory.splice(-1, 1);
+      this.renderGameState();
     }
   }
 }

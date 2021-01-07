@@ -72,6 +72,7 @@
                 <button class="skipTurn playButtons" (click)="skipTurn()" disabled>Skip Turn</button>
                 <button class="playButtons" (click)="downloadJSON()">Download Gamestate</button>
                 <button class="playButtons" (click)="loadgame()">Load Gamestate</button>
+                <button class="playButtons" (click)="goToPreviousGameState()">Undo one move</button>
             </div>
 
             <input class="hidden" type="file" id="upload-file" name="upload-file" accept=".json" ngf-max-size="5KB"
