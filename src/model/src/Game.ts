@@ -4,7 +4,7 @@ import { isEqual } from 'lodash';
 
 /** Return integer from 0 to 4 */
 export function throwDice(): number {
-    let dice: boolean[] = [false, false, false, false];
+    const dice: boolean[] = [false, false, false, false];
     for (let i = 0; i < dice.length; i++) {
         dice[i] = Math.random() <= 0.5;
     }
@@ -108,7 +108,7 @@ export function validMove(gameState: GameState, squareNumber: number, playerColo
         return false;
     }
 
-    if (endSquare.stone == startSquare.stone) {
+    if (endSquare.stone === startSquare.stone) {
         return false;
     } else if (endSquare.stone) {
         if (endSquare.special) {
@@ -123,11 +123,11 @@ export function canRepeatMove(gameState: GameState, player: Player, squareNumber
 }
 
 export function hasPlayerWon(player: Player): boolean {
-    return player.finishedStones == 7;
+    return player.finishedStones === 7;
 }
 
 export function getPossibleMoveSquareIndexes(gameState: GameState, player: Player, diceRoll: number): number[] {
-    let possibleMoveSquares = [];
+    const possibleMoveSquares = [];
     for (let i = 1; i <= 14; i++) {
         const square = nthSquare(gameState.board, player.stoneColor, i);
         if (square.stone) {

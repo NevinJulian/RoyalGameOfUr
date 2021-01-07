@@ -7,7 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./endscreen.component.scss']
 })
 export class EndscreenComponent implements OnInit {
-  message: String;
+  message: string;
 
   constructor(public activatedRoute: ActivatedRoute, public router: Router) { }
 

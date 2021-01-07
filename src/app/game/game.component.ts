@@ -19,29 +19,28 @@ export class GameComponent implements OnInit {
   constructor(public router: Router) {
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.gameState = generateStartingGameState();
     this.gameStateHistory.push(this.gameState);
-    let dice = throwDice();
   }
 
-  skipTurn() {
+  skipTurn(): void {
     this.placeAIStone();
     this.disableSkipTurnButton();
     this.enableDiceRollButton();
   }
 
   canSkipTurn(): boolean {
-    if (this.diceRoll == 0) {
+    if (this.diceRoll === 0) {
       return true;
-    } else if (getPossibleMoveSquareIndexes(this.gameState, this.gameState.player, this.diceRoll).length == 0
-      && canPlaceStoneOnBoard(this.gameState, this.gameState.player, this.diceRoll) == false) {
+    } else if (getPossibleMoveSquareIndexes(this.gameState, this.gameState.player, this.diceRoll).length === 0
+      && canPlaceStoneOnBoard(this.gameState, this.gameState.player, this.diceRoll) === false) {
       return true;
     }
     return false;
   }
 
-  throwDice() {
+  throwDice(): void {
     this.diceRoll = throwDice();
     this.disableDiceRollButton();
 
@@ -119,8 +118,8 @@ export class GameComponent implements OnInit {
     return false;
   }
 
-  navigateToEndscreen(hasPlayerWon: boolean): void {
-    if (hasPlayerWon) {
+  navigateToEndscreen(hasWon: boolean): void {
+    if (hasWon) {
       this.router.navigateByUrl('endscreen', { state: { message: "Good job! You won!" } });
     } else {
       this.router.navigateByUrl('endscreen', { state: { message: "Noob." } });
@@ -161,7 +160,7 @@ export class GameComponent implements OnInit {
     this.diceRoll = throwDice();
     const possibleMoveSquareIndexes = getPossibleMoveSquareIndexes(this.gameState, this.gameState.ai, this.diceRoll);
 
-    if (possibleMoveSquareIndexes.length != 0) {
+    if (possibleMoveSquareIndexes.length !== 0) {
       const gameStateAfter = moveStone(this.gameState, possibleMoveSquareIndexes[0], this.gameState.ai, this.diceRoll);
       if (gameStateAfter != null) {
         this.gameStateHistory.push(gameStateAfter);
@@ -176,7 +175,7 @@ export class GameComponent implements OnInit {
   }
 
   convertSquareNumberToNthSquareOfPlayer(squareNumber, playerToMove): number {
-    if (playerToMove == this.gameState.player) {
+    if (playerToMove === this.gameState.player) {
       if (squareNumber <= 3) {
         return squareNumber + 1;
       }
@@ -184,7 +183,7 @@ export class GameComponent implements OnInit {
         return squareNumber - 3;
       }
     }
-    if (playerToMove == this.gameState.ai) {
+    if (playerToMove === this.gameState.ai) {
       if (squareNumber > 3 && squareNumber <= 15) {
         return squareNumber - 3;
       }
@@ -255,7 +254,7 @@ export class GameComponent implements OnInit {
           this.gameState = json;
           this.renderGameState();
         }
-      }
+      };
 
       reader.readAsText(gameState);
     }
@@ -265,39 +264,39 @@ export class GameComponent implements OnInit {
     for (let i = 0; i < this.gameState.board.length; i++) {
       const square = this.gameState.board[i];
       if (square.stone != null) {
-        if (square.stone == "black") {
+        if (square.stone === "black") {
           if (square.special) {
-            document.getElementsByName(i.toString())[0].innerHTML = `<img name="blackStoneImg_${i}" class="stones" src="../assets/img/black_special.svg">`
+            document.getElementsByName(i.toString())[0].innerHTML = `<img name="blackStoneImg_${i}" class="stones" src="../assets/img/black_special.svg">`;
             document.getElementsByName("blackStoneImg_" + i)[0].addEventListener("click", (e) => {
               this.moveStone(i);
             });
           }
           else {
-            document.getElementsByName(i.toString())[0].innerHTML = `<img name="blackStoneImg_${i}" class="stones" src="../assets/img/black_normal.svg">`
+            document.getElementsByName(i.toString())[0].innerHTML = `<img name="blackStoneImg_${i}" class="stones" src="../assets/img/black_normal.svg">`;
             document.getElementsByName("blackStoneImg_" + i)[0].addEventListener("click", (e) => {
               this.moveStone(i);
             });
           }
         }
-        if (square.stone == "white") {
+        if (square.stone === "white") {
           if (square.special) {
-            document.getElementsByName(i.toString())[0].innerHTML = `<img class=\"stones\" src=\"../assets/img/white_special.svg\">`
+            document.getElementsByName(i.toString())[0].innerHTML = `<img class=\"stones\" src=\"../assets/img/white_special.svg\">`;
           }
           else {
-            document.getElementsByName(i.toString())[0].innerHTML = `<img class=\"stones\" src=\"../assets/img/white_normal.svg\">`
+            document.getElementsByName(i.toString())[0].innerHTML = `<img class=\"stones\" src=\"../assets/img/white_normal.svg\">`;
           }
         }
 
       }
       else {
         if (square.special) {
-          document.getElementsByName(i.toString())[0].innerHTML = `<img class="images" src="../assets/img/special-field.svg">`
+          document.getElementsByName(i.toString())[0].innerHTML = `<img class="images" src="../assets/img/special-field.svg">`;
         }
         else if (square.isFinish) {
-          document.getElementsByName(i.toString())[0].innerHTML = ``
+          document.getElementsByName(i.toString())[0].innerHTML = ``;
         }
         else {
-          document.getElementsByName(i.toString())[0].innerHTML = `<img class="images" src="../assets/img/field.svg">`
+          document.getElementsByName(i.toString())[0].innerHTML = `<img class="images" src="../assets/img/field.svg">`;
         }
       }
     }
